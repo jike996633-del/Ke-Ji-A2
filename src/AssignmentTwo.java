@@ -96,7 +96,7 @@ public class AssignmentTwo {
         rollerCoaster.printRideHistory();
     }
 
-    // Part 5：骑乘周期演示（完善逻辑）
+    // Part 5：骑乘周期演示（已完善）
     public void partFive() {
         System.out.println("\n==================== Part 5 骑乘周期运行演示 ====================");
         // 1. 创建操作员和骑乘（maxRider=4）
@@ -122,8 +122,28 @@ public class AssignmentTwo {
         System.out.println("【" + rollerCoaster.getRideName() + "】已运行周期数：" + rollerCoaster.getNumOfCycles());
     }
 
-    // Part 6：文件导出演示（暂空，后续修改）
-    public void partSix() {}
+    // Part 6：文件导出演示（完善逻辑）
+    public void partSix() {
+        System.out.println("\n==================== Part 6 文件导出（骑乘历史）演示 ====================");
+        // 1. 创建操作员和骑乘
+        Employee operator = new Employee("张三", 35, "13800138000", "EMP001", "过山车操作员");
+        Ride rollerCoaster = new Ride("过山车", 20, operator, 4);
+        // 2. 添加5个游客到历史（满足“至少5个”要求）
+        Visitor v1 = new Visitor("李四", 22, "13900139000", "VIS001", true);
+        Visitor v2 = new Visitor("王五", 18, "13700137000", "VIS002", false);
+        Visitor v3 = new Visitor("赵六", 25, "13600136000", "VIS003", true);
+        Visitor v4 = new Visitor("孙七", 30, "13500135000", "VIS004", false);
+        Visitor v5 = new Visitor("周八", 28, "13400134000", "VIS005", true);
+        rollerCoaster.addVisitorToHistory(v1);
+        rollerCoaster.addVisitorToHistory(v2);
+        rollerCoaster.addVisitorToHistory(v3);
+        rollerCoaster.addVisitorToHistory(v4);
+        rollerCoaster.addVisitorToHistory(v5);
+        // 3. 导出到项目根目录（文件名为rideHistory.csv，无需手动创建）
+        String exportPath = "rideHistory.csv"; // 相对路径：项目根目录（与src同级）
+        rollerCoaster.exportRideHistory(exportPath);
+        // 提示：导出后可在IDE的“Package Explorer/Project”面板中刷新项目，查看rideHistory.csv文件
+    }
 
     // Part 7：文件导入演示（暂空，后续修改）
     public void partSeven() {}

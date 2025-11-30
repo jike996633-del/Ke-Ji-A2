@@ -70,7 +70,7 @@ public class Ride implements RideInterface {
         return numOfCycles;
     }
 
-    // -------------------------- 接口方法实现（完善所有Part 3-5方法）--------------------------
+    // -------------------------- 接口方法实现（完善所有Part 3-6方法）--------------------------
     // Part 3：队列方法（已完善）
     @Override
     public void addVisitorToQueue(Visitor visitor) {
@@ -156,7 +156,7 @@ public class Ride implements RideInterface {
         }
     }
 
-    // Part 5：骑乘周期方法（完善逻辑）
+    // Part 5：骑乘周期方法（已完善）
     @Override
     public void runOneCycle() {
         System.out.println("\n==================== 【" + rideName + "】运行骑乘周期 ====================");
@@ -193,8 +193,33 @@ public class Ride implements RideInterface {
         System.out.println("✅ 【" + rideName + "】骑乘历史排序完成（按年龄升序+快速通行证优先）");
     }
 
-    // Part 6：文件导出方法（暂空，后续修改）
-    public void exportRideHistory(String filePath) {}
+    // Part 6：文件导出方法（完善逻辑，CSV格式）
+    public void exportRideHistory(String filePath) {
+        System.out.println("\n==================== 导出【" + rideName + "】骑乘历史到文件 ====================");
+        if (rideHistory.isEmpty()) {
+            System.out.println("❌ 导出失败：骑乘历史为空");
+            return;
+        }
+        // 处理IO异常（try-with-resources自动关闭流）
+        try (java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.FileWriter(filePath))) {
+            // 遍历历史，按CSV格式写入（字段：游客ID,姓名,年龄,联系方式,快速通行证）
+            for (Visitor visitor : rideHistory) {
+                String csvLine = String.join(",",
+                        visitor.getVisitorId(),
+                        visitor.getName(),
+                        String.valueOf(visitor.getAge()),
+                        visitor.getContact(),
+                        String.valueOf(visitor.isHasFastPass())
+                );
+                writer.write(csvLine);
+                writer.newLine(); // 每行一个游客
+            }
+            System.out.println("✅ 导出成功！文件路径：" + filePath);
+        } catch (java.io.IOException e) {
+            System.out.println("❌ 导出失败：" + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     // Part 7：文件导入方法（暂空，后续修改）
     public void importRideHistory(String filePath) {}
