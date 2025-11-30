@@ -41,7 +41,7 @@ public class AssignmentTwo {
         rollerCoaster.printQueue();
     }
 
-    // Part 4A：骑乘历史演示（完善逻辑）
+    // Part 4A：骑乘历史演示（已完善）
     public void partFourA() {
         System.out.println("\n==================== Part 4A 骑乘历史功能演示 ====================");
         // 1. 创建操作员和骑乘
@@ -69,7 +69,7 @@ public class AssignmentTwo {
         rollerCoaster.printRideHistory();
     }
 
-    // Part 4B：历史排序演示（完善逻辑）
+    // Part 4B：历史排序演示（已完善）
     public void partFourB() {
         System.out.println("\n==================== Part 4B 骑乘历史排序演示 ====================");
         // 1. 创建操作员和骑乘
@@ -96,8 +96,31 @@ public class AssignmentTwo {
         rollerCoaster.printRideHistory();
     }
 
-    // Part 5：骑乘周期演示（暂空，后续修改）
-    public void partFive() {}
+    // Part 5：骑乘周期演示（完善逻辑）
+    public void partFive() {
+        System.out.println("\n==================== Part 5 骑乘周期运行演示 ====================");
+        // 1. 创建操作员和骑乘（maxRider=4）
+        Employee operator = new Employee("张三", 35, "13800138000", "EMP001", "过山车操作员");
+        Ride rollerCoaster = new Ride("过山车", 20, operator, 4);
+        // 2. 添加10个游客到队列
+        for (int i = 1; i <= 10; i++) {
+            Visitor visitor = new Visitor("游客" + i, 18 + i, "1380000000" + i, "VIS0" + i, i % 2 == 0);
+            rollerCoaster.addVisitorToQueue(visitor);
+        }
+        // 3. 运行前打印队列
+        System.out.println("运行前等待队列：");
+        rollerCoaster.printQueue();
+        // 4. 运行1个周期
+        rollerCoaster.runOneCycle();
+        // 5. 运行后打印队列
+        System.out.println("\n运行后等待队列（应减少4人）：");
+        rollerCoaster.printQueue();
+        // 6. 运行后打印历史
+        System.out.println("\n运行后骑乘历史（应增加4人）：");
+        rollerCoaster.printRideHistory();
+        // 7. 打印已运行周期数
+        System.out.println("【" + rollerCoaster.getRideName() + "】已运行周期数：" + rollerCoaster.getNumOfCycles());
+    }
 
     // Part 6：文件导出演示（暂空，后续修改）
     public void partSix() {}

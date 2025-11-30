@@ -70,7 +70,7 @@ public class Ride implements RideInterface {
         return numOfCycles;
     }
 
-    // -------------------------- 接口方法实现（完善Part 3-4方法）--------------------------
+    // -------------------------- 接口方法实现（完善所有Part 3-5方法）--------------------------
     // Part 3：队列方法（已完善）
     @Override
     public void addVisitorToQueue(Visitor visitor) {
@@ -156,17 +156,39 @@ public class Ride implements RideInterface {
         }
     }
 
-    // Part 5：骑乘周期方法（暂空，后续修改）
+    // Part 5：骑乘周期方法（完善逻辑）
     @Override
-    public void runOneCycle() {}
+    public void runOneCycle() {
+        System.out.println("\n==================== 【" + rideName + "】运行骑乘周期 ====================");
+        // 1. 检查是否有操作员
+        if (operator == null) {
+            System.out.println("❌ 运行失败：未分配操作员");
+            return;
+        }
+        // 2. 检查等待队列是否为空
+        if (waitingQueue.isEmpty()) {
+            System.out.println("❌ 运行失败：等待队列为空");
+            return;
+        }
+        // 3. 计算本次周期可搭载游客数（不超过maxRider和队列长度）
+        int ridersThisCycle = Math.min(maxRider, waitingQueue.size());
+        System.out.println("✅ 本次周期可搭载" + ridersThisCycle + "名游客（每周期最大" + maxRider + "人）");
+        // 4. 从队列移除并添加到历史
+        for (int i = 0; i < ridersThisCycle; i++) {
+            Visitor visitor = waitingQueue.poll();
+            addVisitorToHistory(visitor); // 复用已有方法
+        }
+        // 5. 周期数+1
+        numOfCycles++;
+        System.out.println("✅ 【" + rideName + "】第" + numOfCycles + "周期运行完成");
+    }
 
-    // Part 4B：排序方法（完善逻辑）
+    // Part 4B：排序方法（已完善）
     public void sortRideHistory() {
         if (rideHistory.isEmpty()) {
             System.out.println("❌ 排序失败：【" + rideName + "】骑乘历史为空");
             return;
         }
-        // 用Collections.sort+自定义Comparator排序
         java.util.Collections.sort(rideHistory, new VisitorComparator());
         System.out.println("✅ 【" + rideName + "】骑乘历史排序完成（按年龄升序+快速通行证优先）");
     }
