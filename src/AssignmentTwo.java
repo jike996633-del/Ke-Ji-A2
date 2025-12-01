@@ -122,7 +122,7 @@ public class AssignmentTwo {
         System.out.println("【" + rollerCoaster.getRideName() + "】已运行周期数：" + rollerCoaster.getNumOfCycles());
     }
 
-    // Part 6：文件导出演示（完善逻辑）
+    // Part 6：文件导出演示（已完善）
     public void partSix() {
         System.out.println("\n==================== Part 6 文件导出（骑乘历史）演示 ====================");
         // 1. 创建操作员和骑乘
@@ -145,6 +145,19 @@ public class AssignmentTwo {
         // 提示：导出后可在IDE的“Package Explorer/Project”面板中刷新项目，查看rideHistory.csv文件
     }
 
-    // Part 7：文件导入演示（暂空，后续修改）
-    public void partSeven() {}
+    // Part 7：文件导入演示（完善逻辑）
+    public void partSeven() {
+        System.out.println("\n==================== Part 7 文件导入（骑乘历史）演示 ====================");
+        // 1. 创建新的骑乘（初始历史为空）
+        Employee operator = new Employee("张三", 35, "13800138000", "EMP001", "过山车操作员");
+        Ride rollerCoaster = new Ride("过山车", 20, operator, 4);
+        // 2. 导入Part 6导出的文件（路径与导出一致：项目根目录的rideHistory.csv）
+        String importPath = "rideHistory.csv";
+        rollerCoaster.importRideHistory(importPath);
+        // 3. 验证导入结果：打印历史数量和详情
+        System.out.println("\n导入后的骑乘历史数量（应与导出时的5个一致）：");
+        rollerCoaster.numberOfVisitors();
+        System.out.println("\n导入后的骑乘历史详情：");
+        rollerCoaster.printRideHistory();
+    }
 }

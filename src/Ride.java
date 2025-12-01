@@ -70,7 +70,7 @@ public class Ride implements RideInterface {
         return numOfCycles;
     }
 
-    // -------------------------- 接口方法实现（完善所有Part 3-6方法）--------------------------
+    // -------------------------- 接口方法实现（完善所有Part 3-7方法）--------------------------
     // Part 3：队列方法（已完善）
     @Override
     public void addVisitorToQueue(Visitor visitor) {
@@ -193,7 +193,7 @@ public class Ride implements RideInterface {
         System.out.println("✅ 【" + rideName + "】骑乘历史排序完成（按年龄升序+快速通行证优先）");
     }
 
-    // Part 6：文件导出方法（完善逻辑，CSV格式）
+    // Part 6：文件导出方法（已完善）
     public void exportRideHistory(String filePath) {
         System.out.println("\n==================== 导出【" + rideName + "】骑乘历史到文件 ====================");
         if (rideHistory.isEmpty()) {
@@ -221,6 +221,48 @@ public class Ride implements RideInterface {
         }
     }
 
-    // Part 7：文件导入方法（暂空，后续修改）
-    public void importRideHistory(String filePath) {}
+    // Part 7：文件导入方法（完善逻辑，读取CSV）
+    public void importRideHistory(String filePath) {
+        System.out.println("\n==================== 从文件导入【" + rideName + "】骑乘历史 ====================");
+        // 处理IO异常和格式异常
+        try (java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader(filePath))) {
+            String line;
+            int importCount = 0; // 记录导入成功的游客数
+            // 逐行读取文件
+            while ((line = reader.readLine()) != null) {
+                line = line.trim(); // 去除空格，避免空行干扰
+                if (line.isEmpty()) continue; // 跳过空行
+
+                // 按逗号分割字段（需与导出格式一致：游客ID,姓名,年龄,联系方式,快速通行证）
+                String[] fields = line.split(",");
+                if (fields.length != 5) { // 字段数错误，跳过无效行
+                    System.out.println("⚠️  跳过无效行：" + line + "（需5个字段，实际" + fields.length + "个）");
+                    continue;
+                }
+
+                // 解析字段（处理格式转换异常，如年龄不是数字）
+                try {
+                    String visitorId = fields[0];
+                    String name = fields[1];
+                    int age = Integer.parseInt(fields[2]); // 可能抛NumberFormatException
+                    String contact = fields[3];
+                    boolean hasFastPass = Boolean.parseBoolean(fields[4]);
+
+                    // 创建游客对象并添加到历史
+                    Visitor importedVisitor = new Visitor(name, age, contact, visitorId, hasFastPass);
+                    rideHistory.add(importedVisitor);
+                    importCount++;
+                } catch (NumberFormatException e) {
+                    System.out.println("⚠️  跳过无效行：" + line + "（年龄必须是数字）");
+                    continue;
+                }
+            }
+            System.out.println("✅ 导入完成！共导入" + importCount + "名游客");
+        } catch (java.io.FileNotFoundException e) {
+            System.out.println("❌ 导入失败：文件不存在（路径：" + filePath + "）");
+        } catch (java.io.IOException e) {
+            System.out.println("❌ 导入失败：" + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }
